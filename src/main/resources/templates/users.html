@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>users - Library Management System</title>
+    <div th:replace="~{fragments/header :: head}"></div>
+</head>
+<body>
+<div th:replace="~{fragments/header :: nav}"></div>
+
+<div class="bg-white p-8 rounded-lg shadow-lg mb-6">
+    <h2 class="text-3xl font-bold text-gray-800 mb-6">users List</h2>
+
+    <a th:href="@{/users/new}" class="btn btn-primary mb-6 inline-block">Add New users</a>
+
+    <div th:if="${users.isEmpty()}" class="text-gray-600">
+        <p>No users registered yet. Add some!</p>
+    </div>
+
+    <div th:unless="${users.isEmpty()}">
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                <thead>
+                <tr>
+                    <th class="py-3 px-4 border-b">ID</th>
+                    <th class="py-3 px-4 border-b">Name</th>
+                    <th class="py-3 px-4 border-b">Email</th>
+                    <th class="py-3 px-4 border-b">Phone Number</th>
+                    <th class="py-3 px-4 border-b text-center">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="users : ${users}" class="hover:bg-gray-50">
+                    <td th:text="${users.id}" class="py-3 px-4 border-b"></td>
+                    <td th:text="${users.name}" class="py-3 px-4 border-b"></td>
+                    <td th:text="${users.email}" class="py-3 px-4 border-b"></td>
+                    <td th:text="${users.phoneNumber}" class="py-3 px-4 border-b"></td>
+                    <td class="py-3 px-4 border-b text-center">
+                        <a th:href="@{/users/edit/{id}(id=${users.id})}" class="btn btn-warning btn-sm mr-2 inline-block">Edit</a>
+                        <a th:href="@{/users/delete/{id}(id=${users.id})}" class="btn btn-danger btn-sm inline-block"
+                           onclick="return confirm('Are you sure you want to delete this users?');">Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

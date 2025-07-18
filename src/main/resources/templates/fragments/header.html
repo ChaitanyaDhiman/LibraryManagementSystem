@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        /* Custom styles for better aesthetics */
+        .container {
+            max-width: 1200px;
+        }
+        .table-auto {
+            width: 100%;
+        }
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        th {
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: #4a5568;
+        }
+        tr:hover {
+            background-color: #f0f4f8;
+        }
+        .btn {
+            @apply px-4 py-2 rounded-md font-semibold text-white transition duration-200 ease-in-out;
+        }
+        .btn-primary {
+            @apply bg-blue-600 hover:bg-blue-700;
+        }
+        .btn-success {
+            @apply bg-green-600 hover:bg-green-700;
+        }
+        .btn-warning {
+            @apply bg-yellow-600 hover:bg-yellow-700;
+        }
+        .btn-danger {
+            @apply bg-red-600 hover:bg-red-700;
+        }
+        .btn-info {
+            @apply bg-cyan-600 hover:bg-cyan-700;
+        }
+        .alert {
+            @apply p-4 mb-4 rounded-md;
+        }
+        .alert-success {
+            @apply bg-green-100 text-green-800;
+        }
+        .alert-error {
+            @apply bg-red-100 text-red-800;
+        }
+        .form-input {
+            @apply mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm;
+        }
+        .form-label {
+            @apply block text-sm font-medium text-gray-700;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+<nav class="bg-blue-800 p-4 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="/" class="text-white text-2xl font-bold rounded-md px-3 py-1 hover:bg-blue-700 transition duration-200">Library LMS</a>
+        <div class="flex space-x-4">
+            <a href="/books" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md transition duration-200">Books</a>
+            <a href="/users" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md transition duration-200">Users</a>
+            <a href="/h2-console" target="_blank" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md transition duration-200">H2 Console</a>
+        </div>
+    </div>
+</nav>
+
+<main class="flex-grow container mx-auto p-6">
+    <!-- Flash messages -->
+    <div th:if="${message}" class="alert alert-success" role="alert">
+        <p th:text="${message}"></p>
+    </div>
+    <div th:if="${errorMessage}" class="alert alert-error" role="alert">
+        <p th:text="${errorMessage}"></p>
+    </div>

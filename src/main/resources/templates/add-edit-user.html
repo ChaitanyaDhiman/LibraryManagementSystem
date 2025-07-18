@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${pageTitle} + ' - Library Management System'"></title>
+    <div th:replace="~{fragments/header :: head}"></div>
+</head>
+<body>
+<div th:replace="~{fragments/header :: nav}"></div>
+
+<div class="bg-white p-8 rounded-lg shadow-lg mb-6">
+    <h2 class="text-3xl font-bold text-gray-800 mb-6" th:text="${pageTitle}">Add/Edit User</h2>
+
+    <form th:action="@{/users/save}" th:object="${user}" method="post" class="space-y-4">
+        <input type="hidden" th:field="*{id}" />
+
+        <div>
+            <label for="name" class="form-label">Name:</label>
+            <input type="text" id="name" th:field="*{name}" class="form-input" required />
+        </div>
+
+        <div>
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" id="email" th:field="*{email}" class="form-input" required />
+        </div>
+
+        <div>
+            <label for="phoneNumber" class="form-label">Phone Number:</label>
+            <input type="text" id="phoneNumber" th:field="*{phoneNumber}" class="form-input" />
+        </div>
+
+        <div class="flex space-x-4">
+            <button type="submit" class="btn btn-success">Save User</button>
+            <a th:href="@{/users}" class="btn btn-secondary bg-gray-500 hover:bg-gray-600">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
