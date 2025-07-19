@@ -29,6 +29,11 @@
         </div>
 
         <div>
+            <label for="publisher" class="form-label">Publisher:</label>
+            <input type="text" id="publisher" th:field="*{publisher}" class="form-input" required />
+        </div>
+
+        <div>
             <label for="publicationYear" class="form-label">Publication Year:</label>
             <input type="number" id="publicationYear" th:field="*{publicationYear}" class="form-input" required min="1000" max="2100"/>
         </div>

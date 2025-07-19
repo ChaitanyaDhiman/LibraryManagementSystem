@@ -8,9 +8,9 @@
 <div th:replace="~{fragments/header :: nav}"></div>
 
 <div class="bg-white p-8 rounded-lg shadow-lg mb-6">
-    <h2 class="text-3xl font-bold text-gray-800 mb-6">users List</h2>
+    <h2 class="text-3xl font-bold text-gray-800 mb-6">Users List</h2>
 
-    <a th:href="@{/users/new}" class="btn btn-primary mb-6 inline-block">Add New users</a>
+    <a th:href="@{/users/new}" class="btn btn-primary mb-6 inline-block">Add New User</a>
 
     <div th:if="${users.isEmpty()}" class="text-gray-600">
         <p>No users registered yet. Add some!</p>

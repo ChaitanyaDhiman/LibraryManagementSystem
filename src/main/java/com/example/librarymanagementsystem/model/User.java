@@ -3,7 +3,7 @@ package com.example.librarymanagementsystem.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "User")
+@Table(name = "users")
 public class User {
 
     @Id
@@ -17,7 +17,7 @@ public class User {
     private String email;
 
     @Column
-    private String password;
+    private String phoneNumber;
 
     public User() {
 
@@ -27,7 +27,7 @@ public class User {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.password = password;
+        this.phoneNumber = password;
     }
 
     public Long getId() {
@@ -54,12 +54,8 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     @Override
@@ -68,7 +64,7 @@ public class User {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
     }
 }
