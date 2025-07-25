@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!-- Fragment for common head content (meta, styles, etc.) -->
+<div th:fragment="common-head-content">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library Management System</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -65,24 +64,36 @@
             @apply block text-sm font-medium text-gray-700;
         }
     </style>
-</head>
-<body class="bg-gray-100 min-h-screen flex flex-col">
-<nav class="bg-blue-800 p-4 shadow-md">
+</div>
+
+<!-- Fragment for the navigation bar -->
+<nav th:fragment="navbar" class="bg-blue-800 p-4 shadow-md">
     <div class="container mx-auto flex justify-between items-center">
         <a href="/" class="text-white text-2xl font-bold rounded-md px-3 py-1 hover:bg-blue-700 transition duration-200">Library LMS</a>
-        <div class="flex space-x-4">
+        <div class="flex space-x-4 items-center">
             <a href="/books" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md transition duration-200">Books</a>
-            <a href="/users" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md transition duration-200">Users</a>
-            <a href="/h2-console" target="_blank" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md transition duration-200">H2 Console</a>
+            <a href="/users" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md transition duration-200" sec:authorize="hasAnyRole('ROLE_LIBRARIAN', 'ROLE_ADMIN')">Users</a>
+            <a href="/h2-console" target="_blank" class="text-white hover:bg-blue-700 px-3 py-2 rounded-md transition duration-200" sec:authorize="hasRole('ROLE_ADMIN')">H2 Console</a>
+
+            <div sec:authorize="isAuthenticated()" class="flex items-center space-x-2 ml-4">
+                <span class="text-white text-sm">Logged in as: <span sec:authentication="name" class="font-semibold"></span></span>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn bg-red-500 hover:bg-red-600 text-sm py-1 px-3">Logout</button>
+                </form>
+            </div>
+            <div sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}" class="btn btn-success text-sm py-1 px-3">Login</a>
+            </div>
         </div>
     </div>
 </nav>
 
-<main class="flex-grow container mx-auto p-6">
-    <!-- Flash messages -->
+<!-- Fragment for flash messages, to be placed at the start of main content -->
+<div th:fragment="flash-messages">
     <div th:if="${message}" class="alert alert-success" role="alert">
         <p th:text="${message}"></p>
     </div>
     <div th:if="${errorMessage}" class="alert alert-error" role="alert">
         <p th:text="${errorMessage}"></p>
     </div>
+</div>

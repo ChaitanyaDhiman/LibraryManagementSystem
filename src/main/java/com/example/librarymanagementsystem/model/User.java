@@ -2,32 +2,46 @@ package com.example.librarymanagementsystem.model;
 
 import jakarta.persistence.*;
 
+import java.util.Collection;
+
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String name;
+    @Column(unique = true, nullable = false)
+    private String username;
 
-    @Column
+    @Column(nullable = false)
+    private String password;
+
+    @Column(unique = true, nullable = false)
     private String email;
 
-    @Column
-    private String phoneNumber;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Collection<Role> roles;
 
     public User() {
 
     }
 
-    public User(Long id, String name, String email, String password) {
-        this.id = id;
-        this.name = name;
+    public User(String name, String password) {
+        this.username = name;
+        this.password = password;
+    }
+
+    public User(String name, String password, String email) {
+        this.username = name;
+        this.password = password;
         this.email = email;
-        this.phoneNumber = password;
     }
 
     public Long getId() {
@@ -38,12 +52,20 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String name) {
+        this.username = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {
@@ -54,17 +76,26 @@ public class User {
         this.email = email;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + username + '\'' +
+                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
+                ", roles=" + roles +
                 '}';
     }
 }

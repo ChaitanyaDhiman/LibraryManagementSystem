@@ -3,6 +3,7 @@ package com.example.librarymanagementsystem.controller;
 import com.example.librarymanagementsystem.model.User;
 import com.example.librarymanagementsystem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ public class UserController {
 
     //Display all user list
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_LIBRARIAN', 'ROLE_ADMIN')")
     public String getAllUsers(Model model) {
         List<User> users = userService.getAllUsers();
         model.addAttribute("users", userService.getAllUsers());
@@ -27,6 +29,7 @@ public class UserController {
 
     //Show form for adding a new user
     @GetMapping("/new") // Handles GET requests to /users/new
+    @PreAuthorize("hasAnyRole('ROLE_LIBRARIAN', 'ROLE_ADMIN')")
     public String newUser(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("pageTitle", "Added new user");
@@ -35,6 +38,7 @@ public class UserController {
 
     //Handles form submission for adding/updating a user.
     @PostMapping("/save") //Handles POST request to /users/save
+    @PreAuthorize("hasAnyRole('ROLE_LIBRARIAN', 'ROLE_ADMIN')")
     public String saveUser(@ModelAttribute User user, RedirectAttributes redirectAttributes) {
         try {
             if (user.getId() == null) {
@@ -56,6 +60,7 @@ public class UserController {
     }
     // Show form for editing an existing member
     @GetMapping("/edit/{id}") // Handles GET requests to /members/edit/{id}
+    @PreAuthorize("hasAnyRole('ROLE_LIBRARIAN', 'ROLE_ADMIN')")
     public String editUser(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
         try {
             User user = userService.getUserById(id)
@@ -71,6 +76,7 @@ public class UserController {
 
     //Delete a user.
     @GetMapping("/delete/{id}") // Handles GET requests to /members/delete/{id}
+    @PreAuthorize("hasAnyRole('ROLE_LIBRARIAN', 'ROLE_ADMIN')")
     public String deleteUser(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         try {
             userService.deleteUser(id);

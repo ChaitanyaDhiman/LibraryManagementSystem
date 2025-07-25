@@ -1,56 +1,60 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title th:text="${pageTitle} + ' - Library Management System'"></title>
-    <div th:replace="~{fragments/header :: head}"></div>
+    <div th:replace="~{fragments/header :: common-head-content}"></div>
 </head>
-<body>
-<div th:replace="~{fragments/header :: nav}"></div>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+<div th:replace="~{fragments/header :: navbar}"></div>
 
-<div class="bg-white p-8 rounded-lg shadow-lg mb-6">
-    <h2 class="text-3xl font-bold text-gray-800 mb-6" th:text="${pageTitle}">Add/Edit Book</h2>
+<main class="flex-grow container mx-auto p-6">
+    <div th:replace="~{fragments/header :: flash-messages}"></div>
 
-    <form th:action="@{/books/save}" th:object="${book}" method="post" class="space-y-4">
-        <input type="hidden" th:field="*{id}" />
+    <div class="bg-white p-8 rounded-lg shadow-lg mb-6">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6" th:text="${pageTitle}">Add/Edit Book</h2>
 
-        <div>
-            <label for="title" class="form-label">Title:</label>
-            <input type="text" id="title" th:field="*{title}" class="form-input" required />
-        </div>
+        <form th:action="@{/books/save}" th:object="${book}" method="post" class="space-y-4">
+            <input type="hidden" th:field="*{id}" />
 
-        <div>
-            <label for="author" class="form-label">Author:</label>
-            <input type="text" id="author" th:field="*{author}" class="form-input" required />
-        </div>
+            <div>
+                <label for="title" class="form-label">Title:</label>
+                <input type="text" id="title" th:field="*{title}" class="form-input" required />
+            </div>
 
-        <div>
-            <label for="isbn" class="form-label">ISBN:</label>
-            <input type="text" id="isbn" th:field="*{isbn}" class="form-input" required />
-        </div>
+            <div>
+                <label for="author" class="form-label">Author:</label>
+                <input type="text" id="author" th:field="*{author}" class="form-input" required />
+            </div>
 
-        <div>
-            <label for="publisher" class="form-label">Publisher:</label>
-            <input type="text" id="publisher" th:field="*{publisher}" class="form-input" required />
-        </div>
+            <div>
+                <label for="isbn" class="form-label">ISBN:</label>
+                <input type="text" id="isbn" th:field="*{isbn}" class="form-input" required />
+            </div>
 
-        <div>
-            <label for="publicationYear" class="form-label">Publication Year:</label>
-            <input type="number" id="publicationYear" th:field="*{publicationYear}" class="form-input" required min="1000" max="2100"/>
-        </div>
+            <div>
+                <label for="isbn" class="form-label">Publisher:</label>
+                <input type="text" id="publisher" th:field="*{publisher}" class="form-input" required />
+            </div>
 
-        <div th:if="${book.id != null}"> <!-- Only show borrowed status for existing books -->
-            <label for="isBorrowed" class="form-label">Borrowed Status:</label>
-            <input type="checkbox" id="isBorrowed" th:field="*{isBorrowed}" class="ml-2 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
-            <span th:text="${book.isBorrowed()} ? 'Currently Borrowed' : 'Available'"></span>
-        </div>
+            <div>
+                <label for="publicationYear" class="form-label">Publication Year:</label>
+                <input type="number" id="publicationYear" th:field="*{publicationYear}" class="form-input" required min="1000" max="2100"/>
+            </div>
 
-        <div class="flex space-x-4">
-            <button type="submit" class="btn btn-success">Save Book</button>
-            <a th:href="@{/books}" class="btn btn-secondary bg-gray-500 hover:bg-gray-600">Cancel</a>
-        </div>
-    </form>
-</div>
+            <div th:if="${book.id != null}"> <!-- Only show borrowed status for existing books -->
+                <label for="isBorrowed" class="form-label">Borrowed Status:</label>
+                <input type="checkbox" id="isBorrowed" th:field="*{isBorrowed}" class="ml-2 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
+                <span th:text="${book.isBorrowed()} ? 'Currently Borrowed' : 'Available'"></span>
+            </div>
 
-<div th:replace="~{fragments/footer :: footer}"></div>
+            <div class="flex space-x-4">
+                <button type="submit" class="btn btn-success">Save Book</button>
+                <a th:href="@{/books}" class="btn btn-secondary bg-gray-500 hover:bg-gray-600">Cancel</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: common-footer}"></div>
 </body>
 </html>

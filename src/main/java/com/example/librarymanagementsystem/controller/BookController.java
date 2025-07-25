@@ -3,6 +3,7 @@ package com.example.librarymanagementsystem.controller;
 import com.example.librarymanagementsystem.model.Book;
 import com.example.librarymanagementsystem.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ public class BookController {
 
     //Display a list of all books.
     @GetMapping// Handles GET requests to /books
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_LIBRARIAN', 'ROLE_ADMIN')")
     public String getBooks(Model model) {
         List<Book> books = bookService.getAllBooks();
         model.addAttribute("books", books);
@@ -27,6 +29,7 @@ public class BookController {
 
     //Show form for adding a new book.
     @GetMapping("/new") // Handles GET requests to /books/new
+    @PreAuthorize("hasAnyRole('ROLE_LIBRARIAN', 'ROLE_ADMIN')")
     public String newBook(Model model) {
         model.addAttribute("book", new Book());
         model.addAttribute("pageTitle", "Add new book");
@@ -35,6 +38,7 @@ public class BookController {
 
     //Handle form submission for adding/updating a book.
     @PostMapping("/save") // Handles POST requests to /books/save
+    @PreAuthorize("hasAnyRole('ROLE_LIBRARIAN', 'ROLE_ADMIN')")
     public String saveBook(@ModelAttribute("book") Book book, RedirectAttributes redirectAttributes) {
         try {
             if (book.getId() == null) {
@@ -57,6 +61,7 @@ public class BookController {
 
     //Show form for editing an existing book
     @GetMapping("/edit/{id}") // Handles Get request to /books/edit/{id}
+    @PreAuthorize("hasAnyRole('ROLE_LIBRARIAN', 'ROLE_ADMIN')")
     public String editBook(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
         try {
             Book book = bookService.getBookById(id);
@@ -74,6 +79,7 @@ public class BookController {
 
     //Delete a book.
     @GetMapping("/delete/{id}") // Handles Get request to /books/delete/{id}
+    @PreAuthorize("hasAnyRole('ROLE_LIBRARIAN', 'ROLE_ADMIN')")
     public String deleteBook(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         try{
             bookService.deleteBook(id);
@@ -86,6 +92,7 @@ public class BookController {
 
     //Borrow a book.
     @GetMapping("/borrow/{id}") // Handles Get request to /books/borrow/{id}
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_LIBRARIAN', 'ROLE_ADMIN')")
     public String borrowBook(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
         try {
             bookService.borrowBook(id);
@@ -98,6 +105,7 @@ public class BookController {
 
     //Return a book.
     @GetMapping("/return/{id}") //Handles GET request to /books/return/{id}
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_LIBRARIAN', 'ROLE_ADMIN')")
     public String returnBook(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
         try{
             bookService.returnBook(id);

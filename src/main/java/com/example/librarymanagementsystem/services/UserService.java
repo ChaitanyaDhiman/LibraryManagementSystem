@@ -1,10 +1,14 @@
 package com.example.librarymanagementsystem.services;
 
+import com.example.librarymanagementsystem.model.Role;
 import com.example.librarymanagementsystem.model.User;
+import com.example.librarymanagementsystem.repositories.RoleRepository;
 import com.example.librarymanagementsystem.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +17,10 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     //Get all users.
     public List<User> getAllUsers() {
@@ -29,7 +37,12 @@ public class UserService {
         if(userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new IllegalArgumentException("User with this Email: " + user.getEmail() + " already exists");
         }
-        return userRepository.save(user);
+        Role defaultRole = roleRepository.findByRole("ROLE_USER")
+                .orElseGet(() -> roleRepository.save(new Role("ROLE_USER")));
+
+        User newUser = new User(user.getUsername(), passwordEncoder.encode(user.getPassword()), user.getEmail());
+        newUser.setRoles(Collections.singletonList(defaultRole));
+        return userRepository.save(newUser);
     }
 
     //Update an existing user.
@@ -37,7 +50,7 @@ public class UserService {
         Optional<User> userOptional = userRepository.findById(id);
         if(userOptional.isPresent()) {
             User userToUpdate = userOptional.get();
-            userToUpdate.setName(user.getName());
+            userToUpdate.setUsername(user.getUsername());
             userToUpdate.setEmail(user.getEmail());
             return userRepository.save(userToUpdate);
         } else {

@@ -1,8 +1,5 @@
-</main>
-<footer class="bg-gray-800 text-white p-4 text-center mt-auto">
+<footer th:fragment="common-footer" class="bg-gray-800 text-white p-4 text-center mt-auto">
     <div class="container mx-auto">
         &copy; <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2023</span> Library Management System. All rights reserved.
     </div>
 </footer>
-</body>
-</html>
